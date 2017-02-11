@@ -44,7 +44,7 @@ app.intent('calcMort', {
     }
      if (!(_.isEmpty(homePrice) && _.isEmpty(termLength) && _.isEmpty(homeDown))) {
        if(termLength === 30){termLength = "fix30";}else if(termLength === 15){termLength = "fix15";}else{termLength = "fix30"}
-       var request = unirest("GET", "http://localhost:3000/calcMort/"+ homePrice + "/"+ termLength + "/" + homeDown);
+       var request = unirest("GET", "https://alexa-cooper.herokuapp.com/calcMort/"+ homePrice + "/"+ termLength + "/" + homeDown);
        request.end(function (response) {
         if (response.error) throw new Error(response.error);
         var data = response.body;
