@@ -31,48 +31,32 @@ app.intent('calcMort', {
       var prompt = 'I didn\'t get you. Tell me an the price of your home.';
       res.say(reprompt_homeprice).reprompt(prompt).shouldEndSession(false);
       return true;
-    } else
+    }
     if (_.isEmpty(termLength)) {
       var prompt = 'I didn\'t get you. Tell me an term length.';
       res.say(reprompt_termlength).reprompt(prompt).shouldEndSession(false);
       return true;
-    } else
+    }
     if (_.isEmpty(homeDown)) {
       var prompt = 'I didn\'t get you. Tell me a down payment amount.';
       res.say(reprompt_homeDown).reprompt(prompt).shouldEndSession(false);
       return true;
     }
      if (!(_.isEmpty(homePrice) && _.isEmpty(termLength) && _.isEmpty(homeDown))) {
-       if(termLength === 30){termLength === "fix30";}else if(termLength === 15){termLength === "fix15";}else{termLength === "fix30"}
-       var req = unirest("GET", "https://shaisachs-mortgage-payments-v1.p.mashape.com/payments");
-       req.query({
-  "downPayment": homeDown,
-  "interestRate": "0.00425",
-  "price": homePrice,
-  "taxRate": "2.25",
-  "type": termLength
-});
-req.headers({
-  "cache-control": "no-cache",
-  "x-mashape-key": "oWYe7fCBUWmshCJe5xNGDWaqMMztp1pdWIVjsnSR3LE4cSDVXA"
-});
-req.end(function (res) {
-  if (res.error) throw new Error(res.error);
-  res.say('OK'+ res.body);
-  console.log(res.body);
-});
-
-
-// request(options, function (error, response, body) {
-//   // var data = JSON.parse(response);
-//   console.log(body);
-//   var monthlyPayment = Math.round(data.principalAndInterest+data.taxes+data.homeInsurance+data.mortgageInsurance);
-//   if(!data.mortgageInsurance){
-//   res.say("Your monthly payment will be $ "+monthlyPayment+"! It consists of $"+data.principalAndInterest+" of Principle and Interest, $"+data.taxes+" in taxes, $"+data.homeInsurance+" as home insurance and as your LTV is greater than 80%, you don't need a mortgage Insuarance! Contact me on 1-888-480-2432 now for a better understanding!").send();
-// 	}else if(data.mortgageInsurance){
-// 		res.say("Your monthly payment will be $ "+monthlyPayment+"! It consists of $"+data.principalAndInterest+" of Principle and Interest, $"+data.taxes+" in taxes, $"+data.homeInsurance+" as home insurance and "+data.mortgageInsurance+" for mortgage Insuarance! Contact me on 1-888-480-2432 now for a better understanding!").send();
-// 	}
-// });
+       if(termLength === 30){termLength = "fix30";}else if(termLength === 15){termLength = "fix15";}else{termLength = "fix30"}
+       var request = unirest("GET", "http://localhost:3000/calcMort/"+ homePrice + "/"+ termLength + "/" + homeDown);
+       request.end(function (response) {
+        if (response.error) throw new Error(response.error);
+        var data = response.body;
+        console.log(data);
+        var monthlyPayment = Math.round(data.principalAndInterest+data.taxes+data.homeInsurance+data.mortgageInsurance);
+	if(!data.mortgageInsurance){
+  res.say("Your monthly payment will be $ "+monthlyPayment+"! It consists of $"+data.principalAndInterest+" of Principle and Interest, $"+data.taxes+" in taxes, $"+data.homeInsurance+" as home insurance and as your LTV is greater than 80%, you don't need a mortgage Insuarance! Contact me on 1-888-480-2432 now for a better understanding!").send();
+	}else if(data.mortgageInsurance){
+		res.say("Your monthly payment will be $ "+monthlyPayment+"! It consists of $"+data.principalAndInterest+" of Principle and Interest, $"+data.taxes+" in taxes, $"+data.homeInsurance+" as home insurance and "+data.mortgageInsurance+" for mortgage Insuarance! Contact me on 1-888-480-2432 now for a better understanding!").send();
+	}
+       });
+    return false;
     }
     return false;
   }
