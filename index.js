@@ -27,20 +27,20 @@ app.post = function(request, res, type, exception) {
  }
  return false;
 };
-// HOMEPRICE INTENT
+// HOMEPRICESLOT INTENT
 app.intent('homePrice', {
   'slots': {
-    'HOMEPRICE': 'AMAZON.NUMBER',
+    'HOMEPRICESLOT': 'AMAZON.NUMBER',
   },
   'utterances': [
-    '{my} {home|house|property} {cost|price|value} {|is|a} {-|HOMEPRICE} {|dollars}',
-    '{-|HOMEPRICE} {|dollars}'
+    '{my} {home|house|property} {cost|price|value} {|is|a} {-|HOMEPRICESLOT} {|dollars}',
+    '{-|HOMEPRICESLOT} {|dollars}'
 ]
 },
   function(req, res) {
     var session = req.getSession();
-    if (req.slot('HOMEPRICE')) {
-     session.set('HP',req.slot('HOMEPRICE'));
+    if (req.slot('HOMEPRICESLOT')) {
+     session.set('HP',req.slot('HOMEPRICESLOT'));
      res.shouldEndSession(false);
      return true;
   } else {
@@ -50,20 +50,20 @@ app.intent('homePrice', {
 }
 );
 
-// HOMEDOWN INTENT
+// HOMEDOWNSLOT INTENT
 app.intent('homeDown', {
   'slots': {
-    'HOMEDOWN': 'AMAZON.NUMBER',
+    'HOMEDOWNSLOT': 'AMAZON.NUMBER',
   },
   'utterances': [
-    '{|i} {will|would|may|} {|put down|put|have} {-|HOMEDOWN} {|dollars}',
-    '{-|HOMEDOWN} {|dollars}'
+    '{|i} {will|would|may|} {|put down|put|have} {-|HOMEDOWNSLOT} {|dollars}',
+    '{-|HOMEDOWNSLOT} {|dollars}'
 ]
 },
   function(req, res) {
     var session = req.getSession();
-    if (req.slot('HOMEDOWN')) {
-     session.set('HD',req.slot('HOMEDOWN'));
+    if (req.slot('HOMEDOWNSLOT')) {
+     session.set('HD',req.slot('HOMEDOWNSLOT'));
      if (session.get('HP') && session.get('TL') && session.get('HD')) {
        var homePrice = session.get('HP');
        var termLength = session.get('TL');
