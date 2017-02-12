@@ -69,7 +69,7 @@ app.intent('homeDown', {
        var termLength = session.get('TL');
        var homeDown = session.get('HD');
        if(termLength === 30){termLength = "fix30";}else if(termLength === 15){termLength = "fix15";}else{termLength = "fix30"}
-       var requ = unirest("GET", "http://localhost:3000/calcMort/"+ homePrice + "/"+ termLength + "/" + homeDown);
+       var requ = unirest("GET", "https://alexa-cooper.herokuapp.com/calcMort/"+ homePrice + "/"+ termLength + "/" + homeDown);
        requ.end(function (response) {
         if (response.error) throw new Error(response.error);
         var data = response.body;
@@ -77,9 +77,9 @@ app.intent('homeDown', {
         var saying = JSON.stringify(data);
         var monthlyPayment = Math.round(data.principalAndInterest+data.taxes+data.homeInsurance+data.mortgageInsurance);
     if(!data.mortgageInsurance){
-    res.say("Your monthly payment will be $ "+monthlyPayment+"! It consists of $"+data.principalAndInterest+" of Principle and Interest, $"+data.taxes+" in taxes, $"+data.homeInsurance+" as home insurance and as your LTV is greater than 80%, you don't need a mortgage Insuarance! Contact me on 1-888-480-2432 now for a better understanding!").send();
+    res.say("Your monthly payment will be $ "+monthlyPayment+"! It consists of $"+data.principalAndInterest+" of Principle and Interest, $"+data.taxes+" in taxes, $"+data.homeInsurance+" as home insurance and as your LTV is greater than 80%, you don't need a mortgage Insuarance! Contact me on 1-888-480-2432 now for a better understanding!").shouldEndSession(true).send();
     }else if(data.mortgageInsurance){
-    res.say("Your monthly payment will be $ "+monthlyPayment+"! It consists of $"+data.principalAndInterest+" of Principle and Interest, $"+data.taxes+" in taxes, $"+data.homeInsurance+" as home insurance and "+data.mortgageInsurance+" for mortgage Insuarance! Contact me on 1-888-480-2432 now for a better understanding!").send();
+    res.say("Your monthly payment will be $ "+monthlyPayment+"! It consists of $"+data.principalAndInterest+" of Principle and Interest, $"+data.taxes+" in taxes, $"+data.homeInsurance+" as home insurance and "+data.mortgageInsurance+" for mortgage Insuarance! Contact me on 1-888-480-2432 now for a better understanding!").shouldEndSession(true).send();
     }
        });
      }
