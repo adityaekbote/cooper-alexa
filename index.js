@@ -93,16 +93,16 @@ app.intent('homeDown', {
 // TERMLENGTH INTENT
 app.intent('termLength', {
   'slots': {
-    'TERMLENGTH': 'AMAZON.NUMBER',
+    'TERMLENGTHSLOT': 'AMAZON.NUMBER',
   },
   'utterances': [
-    '{|its} {|for|like} {-|TERMLENGTH} {|years}'
+    '{|its} {|for|like} {-|TERMLENGTHSLOT} {|years}'
 ]
 },
   function(req, res) {
     var session = req.getSession();
-    if (req.slot('TERMLENGTH')) {
-     session.set('TL',req.slot('TERMLENGTH'));
+    if (req.slot('TERMLENGTHSLOT')) {
+     session.set('TL',req.slot('TERMLENGTHSLOT'));
      res.shouldEndSession(false);
      return true;
   } else {
