@@ -96,7 +96,7 @@ app.intent('termLength', {
     'TERMLENGTHSLOT': 'AMAZON.NUMBER',
   },
   'utterances': [
-    '{|its} {|for|like} {-|TERMLENGTHSLOT} {|years}'
+    '{its} {for|like} {-|TERMLENGTHSLOT} {|years}'
 ]
 },
   function(req, res) {
